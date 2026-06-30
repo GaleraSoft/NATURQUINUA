@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarjeta de Presentación Digital - NATURQUINUA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Carga de Font Awesome v6 mediante CDN para asegurar visibilidad -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <style>
+        :root {
+            --vino: #76002F;
+            --vino2: #4D001F;
+            --dorado: #D8C48B;
+            --crema: #FDF8ED;
+        }
+        body { font-family: 'Poppins', sans-serif; }
+        .bg-vino { background-color: var(--vino); }
+        .text-vino { color: var(--vino); }
+        .interactive-element { transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+        .interactive-element:hover { transform: translateY(-4px) scale(1.05); }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-[#FDF8ED] via-[#FFF8EE] to-[#F3E4BF]">
+
+    <div class="w-full min-h-screen flex items-center justify-center p-4" x-data="appData()">
+        <div class="w-full max-w-sm bg-[#F3E8C5] shadow-2xl rounded-2xl overflow-hidden fade-in">
+            
+            <div class="relative h-44 bg-cover bg-center" style="background-image: url('https://i.postimg.cc/KYBS66g9/fotos.jpg');">
+                <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+            </div>
+
+            <div class="flex justify-center -mt-20 z-10 relative">
+                <img class="w-32 h-32 rounded-full border-4 border-white object-cover shadow-lg" src="https://i.postimg.cc/HkPkW1ng/logo.jpg" alt="NATURQUINUA">
+            </div>
+
+            <div class="text-center px-6 pt-4 pb-2">
+                <h2 class="text-3xl font-bold text-[#4D001F]">NATURQUINUA</h2>
+                <p class="text-[#76002F] font-medium">Nutrición Funcional</p>
+            </div>
+
+            <div class="px-6 pt-6 pb-4">
+                <div class="grid grid-cols-3 gap-y-6 gap-x-5">
+                    <template x-for="item in menuItems" :key="item.name">
+                        <a :href="item.modal ? 'javascript:void(0)' : item.link" :target="item.modal ? '' : '_blank'" @click="item.modal ? (activeModal = item.modal) : null" class="cursor-pointer flex flex-col items-center text-center group interactive-element">
+                            <div class="w-16 h-16 rounded-full bg-[#76002F] text-[#D8C48B] flex items-center justify-center shadow-md">
+                                <i :class="item.icon + ' fa-2x'"></i>
+                            </div>
+                            <p class="text-sm font-medium text-[#76002F] mt-2" x-text="item.name"></p>
+                        </a>
+                    </template>
+                </div>
+            </div>
+
+            <div class="px-6 py-6 space-y-4">
+                 <button @click="activeModal = 'PuntosVenta'" class="block w-full bg-[#76002F] text-[#D8C48B] font-bold py-4 px-4 rounded-lg text-center hover:bg-[#4D001F] transition uppercase tracking-wider shadow-lg">PUNTOS DE VENTA</button>
+            </div>
+            
+            <!-- Modal de Horario -->
+            <div x-show="activeModal === 'Horario'" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" x-cloak>
+                <div @click.away="activeModal = null" class="bg-[#FDF8ED] rounded-lg p-6 text-center max-w-xs w-full shadow-2xl">
+                    <div class="text-[#76002F] text-left space-y-2">
+                        <p><strong>Lunes a Viernes:</strong> 9:00 AM - 6:00 PM</p>
+                        <p><strong>Sábados:</strong> 9:00 AM - 2:00 PM</p>
+                        <p><strong>Domingos:</strong> Cerrado</p>
+                    </div>
+                    <button @click="activeModal = null" class="mt-6 bg-[#76002F] text-white py-2 px-6 rounded-lg w-full">Cerrar</button>
+                </div>
+            </div>
+
+            <!-- Modal de QR -->
+            <div x-show="activeModal === 'QR'" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" x-cloak>
+                <div @click.away="activeModal = null" class="bg-[#FDF8ED] rounded-lg p-6 text-center max-w-xs w-full shadow-2xl">
+                    <h3 class="text-xl font-bold text-[#76002F] mb-4">Código QR</h3>
+                    <img src="https://placehold.co/300x300/D8C48B/76002F?text=Tu+QR+Aquí" alt="QR" class="mx-auto rounded-lg mb-4">
+                    <button @click="activeModal = null" class="bg-[#76002F] text-white py-2 px-6 rounded-lg w-full">Cerrar</button>
+                </div>
+            </div>
+
+            <!-- Modal de Puntos de Venta -->
+            <div x-show="activeModal === 'PuntosVenta'" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" x-cloak>
+                <div @click.away="activeModal = null" class="bg-[#FDF8ED] rounded-lg p-4 text-left max-w-xs w-full max-h-[80vh] overflow-y-auto shadow-2xl">
+                    <h3 class="text-xl font-bold text-[#76002F] mb-4 text-center">PUNTOS DE VENTA</h3>
+                    <div class="space-y-3 text-[#76002F] text-sm">
+                        <div class="border-b pb-2">
+                            <p class="font-bold">COOPERATIVA MULTIACTIVA PROVITEC</p>
+                            <p>CR 7 # 6 30 Centro</p>
+                            <p class="text-xs font-semibold">Tel: 8220835</p>
+                        </div>
+                        <div class="border-b pb-2">
+                            <p class="font-bold">BIONATURAL</p>
+                            <p>CRA 8 4 57 BRR Centro</p>
+                            <p class="text-xs font-semibold">Tel: 3182563244</p>
+                        </div>
+                        <div class="border-b pb-2">
+                            <p class="font-bold">MUNDO NATURAL</p>
+                            <p>Calle 5 # 17 - 28 B/La esmeralda</p>
+                            <p class="text-xs font-semibold">Tel: 3206998310</p>
+                        </div>
+                        <div class="border-b pb-2">
+                            <p class="font-bold">VIDA NATURAL</p>
+                            <p>calle 5 No 11-03 Esquina</p>
+                            <p class="text-xs font-semibold">Tel: 3213792665</p>
+                        </div>
+                        <div class="border-b pb-2">
+                            <p class="font-bold">VIVIR MEJOR</p>
+                            <p>Calle 6 # 8 - 10 Centro</p>
+                            <p class="text-xs font-semibold">Tel: 3016629044</p>
+                        </div>
+                        <div class="border-b pb-2">
+                            <p class="font-bold">PLACITA CAMPESINA TERMINAL</p>
+                            <p>Placita campesina Terminal</p>
+                            <p class="text-xs font-semibold">Tel: 3147866000</p>
+                        </div>
+                        <div class="border-b pb-2">
+                            <p class="font-bold">LA TIENDA DE DON DIEGO</p>
+                            <p>Calle 4 # 8-43 Centro</p>
+                            <p class="text-xs font-semibold">Tel: 3148412114</p>
+                        </div>
+                        <div class="border-b pb-2">
+                            <p class="font-bold">TIENDA NATURISTA EL MANANTIAL</p>
+                            <p>cra 6 # 18n 32 B/Recuerdo</p>
+                            <p class="text-xs font-semibold">Tel: 3127433332</p>
+                        </div>
+                        <div class="border-b pb-2">
+                            <p class="font-bold">CASA NATURE SAS</p>
+                            <p>CR 11 # 7 01 Centro</p>
+                            <p class="text-xs font-semibold">Tel: 3136350104</p>
+                        </div>
+                        <div class="border-b pb-2">
+                            <p class="font-bold">SOY NATURAL</p>
+                            <p>cr 56 N Transversal 9 - 17 Santa Lucia</p>
+                            <p class="text-xs font-semibold">Tel: 3106352289</p>
+                        </div>
+                        <div class="border-b pb-2">
+                            <p class="font-bold">CENTRAL COOPERATIVA INDIGENA DEL CAUCA</p>
+                            <p>Tel: 3218400529</p>
+                        </div>
+                    </div>
+                    <button @click="activeModal = null" class="mt-6 bg-[#76002F] text-white py-2 px-6 rounded-lg w-full font-bold">Cerrar</button>
+                </div>
+            </div>
+
+            <!-- Modal de Ubicación -->
+            <div x-show="activeModal === 'Ubicacion'" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" x-cloak>
+                <div @click.away="activeModal = null" class="bg-[#FDF8ED] rounded-lg p-6 text-center max-w-xs w-full shadow-2xl">
+                    <h3 class="text-xl font-bold text-[#76002F] mb-4">Ubicación</h3>
+                    <p class="text-[#76002F] text-lg font-semibold">Popayán - Cauca - Colombia</p>
+                    <button @click="activeModal = null" class="mt-6 bg-[#76002F] text-white py-2 px-6 rounded-lg w-full">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function appData() {
+            return {
+                activeModal: null,
+                menuItems: [
+                    { name: 'Llamar', icon: 'fa-solid fa-phone', link: 'tel:3017175827' },
+                    { name: 'Horario', icon: 'fa-solid fa-clock', modal: 'Horario' },
+                    { name: 'Facebook', icon: 'fa-brands fa-facebook', link: 'https://www.facebook.com/naturquinuacolombia' },
+                    { name: 'WhatsApp', icon: 'fa-brands fa-whatsapp', link: 'https://wa.me/573017175827' },
+                    { name: 'Instagram', icon: 'fa-brands fa-instagram', link: 'https://www.instagram.com/naturquinua?igsh=MWNnMWR4dzFzZ2Fuag==&utm_source=ig_contact_invite' },
+                    { name: 'Correo', icon: 'fa-solid fa-envelope', link: 'mailto:naturquinua@gmail.com' },
+                    { name: 'Ubicación', icon: 'fa-solid fa-location-dot', modal: 'Ubicacion' },
+                    { name: 'Catálogo', icon: 'fa-solid fa-globe', link: 'https://siscontria.shop/342' },
+                    { name: 'QR', icon: 'fa-solid fa-qrcode', modal: 'QR' }
+                ]
+            }
+        }
+    </script>
+</body>
+</html>
